@@ -14,17 +14,13 @@ $y = h(x,u,t)$
 
 ### 1.2. 传递函数
 - 一般形式
- $G(s) = \frac{b_n s^n + b_{n-1}s^{n-1} + \cdots + b_1 s + b_0}{s^n + a_{n-a} s^{n-1} + \cdots + a_1 s + a_0}$
+ $$G(s) = \frac{b_n s^n + b_{n-1}s^{n-1} + \cdots + b_1 s + b_0}{s^n + a_{n-a} s^{n-1} + \cdots + a_1 s + a_0}$$
 - 标准形式
- $
- G(s) = \frac{c_{n-1}s^{n-1} + \cdots + c_1 s + c_0}{s^n + a_{n-a} s^{n-1} + \cdots + a_1 s + a_0} + d
- $
+ $$G(s) = \frac{c_{n-1}s^{n-1} + \cdots + c_1 s + c_0}{s^n + a_{n-a} s^{n-1} + \cdots + a_1 s + a_0} + d$$
 其中，d 可以看成并联子系统，传递函数分析时可以不考虑
 ### 1.3. 传递函数推导状态方程
 - 分子为1形式
- $
- G(s) = \frac{1}{s^3 + a_2 s^2 + a_1 s + a_0}
-$
+ $$G(s) = \frac{1}{s^3 + a_2 s^2 + a_1 s + a_0}$$
 $U(s)$为输入，$Y(s)$为输出，可以得到：
 $
 (s^3 + a_2 s^2 + a_1 s^1 + a_0)Y(s) = U(s)
