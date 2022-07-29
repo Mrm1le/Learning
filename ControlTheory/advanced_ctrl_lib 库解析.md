@@ -29,20 +29,10 @@ $$y'''(t) + a_2 y''(t) + a_1 y'(t) + a_0 y(t) = u(t)$$
 可以得到：
 $$\dot{x}_1 = x_2 \\ \dot{x}_2 = x_3 \\ \dot{x}_x = -a_0 x_1 - a_1 x_2 -a_2 x_3 + u \\ y = x_1$$
 可以得到状态空间方程：
-$$\begin{bmatrix}
- \dot{x}_1 \\ \dot{x}_2 \\ \dot{x}_3
- \end{bmatrix} = 
-\begin{bmatrix}
- 0 & 1 & 0 \\ 0 & 0 & 1 \\ -a_0 & -a_1 & -a_2
- \end{bmatrix}
-\begin{bmatrix}
- x_1 \\ x_2 \\ x_3
- \end{bmatrix} + 
-\begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix} u$$
-$$y = \begin{bmatrix} 1 & 0 & 0 \end{bmatrix} \begin{bmatrix}
- x_1 \\ x_2 \\ x_3 \end{bmatrix}$$
+$$\begin{bmatrix}\dot{x}_1 \\ \dot{x}_2 \\ \dot{x}_3\end{bmatrix} = \begin{bmatrix}0 & 1 & 0 \\ 0 & 0 & 1 \\ -a_0 &  -a_1 & -a_2\end{bmatrix} \begin{bmatrix}x_1 \\ x_2 \\ x_3\end{bmatrix} + \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix} u$$
+$$y = \begin{bmatrix} 1 & 0 & 0 \end{bmatrix} \begin{bmatrix}x_1 \\ x_2 \\ x_3 \end{bmatrix}$$
 - 分子不为1形式
- $$G(s) = \frac{b_2 s^2 + b_1 s + b_0}{s^3 + a_2 s^2 + a_1 s + a_0} = \frac{b(s)}{a(s)}$$
+$$G(s) = \frac{b_2 s^2 + b_1 s + b_0}{s^3 + a_2 s^2 + a_1 s + a_0} = \frac{b(s)}{a(s)}$$
 可以看成：
 $$Y(s) = \frac{b(s)}{a(s)} U(s) = b(s)[\frac{1}{a(s)}U(s)]$$
 对于内层：
@@ -54,30 +44,15 @@ $$Y_1(s) = b(s)Y_1(s) = b_2 s^2 X_1(s) + b_1 s X_1(s) + b_0 X_1(s)$$
 转换成微分方程：
 $$y = b_2 \ddot{x_1} + b_1 \dot{x_1} + b_0 x_1$$
 定义状态变量：
-$$x_1 = x_1 \\ 
- x_2 = \dot{x_1} \\ 
- x_3 = \ddot{x_1} \\
- y = b_2 \ddot{x_1} + b_1 \dot{x_1} + b_0 x_1 = b_2 x_3 + b_1 x_2 + b_0 x_1$$
+$$x_1 = x_1 \\ x_2 = \dot{x_1} \\ x_3 = \ddot{x_1} \\ y = b_2 \ddot{x_1} + b_1 \dot{x_1} + b_0 x_1 = b_2 x_3 + b_1 x_2 + b_0 x_1$$
 则可以得到：
-$$\begin{bmatrix}
- \dot{x}_1 \\ \dot{x}_2 \\ \dot{x}_3
- \end{bmatrix} = 
-\begin{bmatrix}
- 0 & 1 & 0 \\  0 & 0 & 1 \\ -a_0 & -a_1 & -a_2
- \end{bmatrix}
-\begin{bmatrix}
- x_1 \\ x_2 \\ x_3
- \end{bmatrix} + 
-\begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix} u$$
-$$y = \begin{bmatrix} b_0 & b_1 & b_2 \end{bmatrix}
- \begin{bmatrix} x_1 \\ x_2 \\ x_3 \end{bmatrix}$$
+$$\begin{bmatrix}\dot{x}_1 \\ \dot{x}_2 \\ \dot{x}_3\end{bmatrix} = \begin{bmatrix}0 & 1 & 0 \\  0 & 0 & 1 \\ -a_0 & -a_1 & -a_2\end{bmatrix}\begin{bmatrix}x_1 \\ x_2 \\ x_3\end{bmatrix} + \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix} u$$
+$$y = \begin{bmatrix} b_0 & b_1 & b_2 \end{bmatrix}\begin{bmatrix} x_1 \\ x_2 \\ x_3 \end{bmatrix}$$
 ### 1.4. 连续系统离散化
 - [前向欧拉](https://zhuanlan.zhihu.com/p/326930724)
-$$\dot{x}(k)=Ax(k)+Bu(k)\\
- \frac{x(k+1)-x(k)}{T}=\dot{x}(k)=Ax(k)+Bu(k)$$
+$$\dot{x}(k)=Ax(k)+Bu(k) \\ \frac{x(k+1)-x(k)}{T}=\dot{x}(k)=Ax(k)+Bu(k)$$
 可以得到
-$$x(k+1)=(AT+I)x(k)+BTu(k)\\
- y(k+1)=C(AT+I)x(k)+CBTu(k)+Du(k+1)\\$$
+$$x(k+1)=(AT+I)x(k)+BTu(k)\\ y(k+1)=C(AT+I)x(k)+CBTu(k)+Du(k+1)\\$$
 或者按照泰勒展开的角度
 $$z=1+sT$$
 即可以看做**算子**为
@@ -100,11 +75,7 @@ $$zX(z)=A(T+1)X(z)+BTX(z)$$
 对于状态方程：
 $$\dot{x} = Ax + Bu + c$$
 进行双线性变换:
-$$G = (I + \frac{1}{2}AT)(I - \frac{1}{2}AT)^{-1} \\
-H = (I - \frac{1}{2}AT)^{-1} B T \\
-E = C (I + \frac{1}{2}AT)(I - \frac{1}{2}AT)^{-1} \\
-F_0 = \frac{1}{2} C (I - \frac{1}{2}AT)^{-1} B T \\
-F_1 = D + \frac{1}{2} C (I - \frac{1}{2}AT)^{-1} B T$$
+$$G = (I + \frac{1}{2}AT)(I - \frac{1}{2}AT)^{-1} \\ H = (I - \frac{1}{2}AT)^{-1} B T \\ E = C (I + \frac{1}{2}AT)(I - \frac{1}{2}AT)^{-1} \\ F_0 = \frac{1}{2} C (I - \frac{1}{2}AT)^{-1} B T \\ F_1 = D + \frac{1}{2} C (I - \frac{1}{2}AT)^{-1} B T$$
 可以得到：
 $$x(k+1) = G x(k) + H u(k)$$
 $$y(k+1) = E x(k) + F_0 u(k) + F_1 u(k+1)$$
@@ -116,10 +87,7 @@ $$y(k+1) = E x(k) + F_0 u(k) + F_1 u(k+1)$$
  $$G(s) = \frac{T_1s+1}{T_2s+1}$$
  其中，$T_1$为超前时间常数，$T_2$为滞后时间常数，$T_1 > T_2$ 为超前控制器，反之为滞后控制器；
 - 代码中$T_2 = T_1 * lead_{gain}$, $lead_{gain}$越小，超前控制越明显：
-  $$coef_z[0] = 1.0f / (2.0f * C_PI_F * lead_fc) * kp;\\
-  coef_z[1] = 1.0f * kp;\\
-  coef_p[0] = 1.0f / (2.0f * C_PI_F * lead_{fc} * lead_{gain});\\
-  coef_p[1] = 1.0f;$$
+  $$coef_z[0] = 1.0f / (2.0f * C_PI_F * lead_fc) * kp;\\ coef_z[1] = 1.0f * kp;\\ coef_p[0] = 1.0f / (2.0f * C_PI_F * lead_{fc} * lead_{gain});\\ coef_p[1] = 1.0f;$$
 - 补偿器设计关键参数：
   - $lead_{fc}$： 采样周期
   - $lead_{gain}$： 超前系数
@@ -165,8 +133,7 @@ $$ |H_a(jw)|^2 = \frac{1}{1+(\frac{w}{w_c})^{2n}} = \frac{1}{1 + \epsilon^2(\fra
 - 传递函数形式：
 $$H(s) = \frac{w_c^N}{a_0 w_c^N + a_a w_c ^{N-1}s + \cdots + a_{n-1}w_c^1 s^{N-1} + s^N}$$
 - 双线性变化离散形式：
-$$H(z) = \frac{num0^0 + num1^1 + \cdots + num[n]z^n}
- {den0^0 + den1^1 + \cdots + den[n]z^n}$$
+$$H(z) = \frac{num0^0 + num1^1 + \cdots + num[n]z^n}{den0^0 + den1^1 + \cdots + den[n]z^n}$$
 - 滤波器设计关键参数：
   - Nz：滤波器阶数
   - fp：通带边界频率
