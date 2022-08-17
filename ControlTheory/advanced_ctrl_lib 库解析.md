@@ -76,7 +76,7 @@ $$zX(z)=A(T+1)X(z)+BTU(z)$$
  $$(z-1)X(z)=A\frac{T}{2}(z+1)X(z)+B\frac{T}{2}(z+1)U(z)$$
  最后推导出形如
  $$zX(z)=A_dX(z)+B_dX(z)$$
-对于状态方程：
+因此对于状态方程：
 $$\dot{x} = Ax + Bu + c$$
 进行双线性变换:
 $$G = (I + \frac{1}{2}AT)(I - \frac{1}{2}AT)^{-1} \\ H = (I - \frac{1}{2}AT)^{-1} B T \\ E = C (I + \frac{1}{2}AT)(I - \frac{1}{2}AT)^{-1} \\ F_0 = \frac{1}{2} C (I - \frac{1}{2}AT)^{-1} B T \\ F_1 = D + \frac{1}{2} C (I - \frac{1}{2}AT)^{-1} B T$$
