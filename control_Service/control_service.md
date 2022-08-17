@@ -1,2 +1,13 @@
 - control_service_driver.cpp 
   - 包含所有Rte收发接口, 与PIE进行通信, 对Rte信号进行转换及部分逻辑处理的方法函数.
+- 20220730 control_service所有的逻辑下移至VMS
+  - 先根据VMS当前建模规范指定**收发接口**, 收为VMS原来接收的信号以及其他需要定义的信号(*在建模时添加*), 发为VMS原来接收的control service信号
+  - 确定收发信号里的coding值, 这块目前交给保健, 给他的要求是删除所有逻辑转换, 只留数据转换部分, ocs里保留接口的数据转换, 所以acs里收到的应该是enable转换成request, command value实时转发, available直接赋1. 
+  - 模型大概分为两部分,
+    - 第一部分
+      - 根据外部信号和mff进退自动的指令, 判断车辆当前应该处在哪个状态(pilot, parking, quit, off等),
+      - 根据can信号, 判断override状态
+    - 第二部分
+      - 根据第一部分的信号, 决定透传哪块的逻辑给到vms.
+  - 先写第一块状态机部分.
+  - 

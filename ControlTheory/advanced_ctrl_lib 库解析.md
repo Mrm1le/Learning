@@ -58,11 +58,11 @@ $$z=1+sT$$
 即可以看做**算子**为
 $$s=\frac{z-1}{T}$$
 有频域上的连续方程和离散方程分别为
-$$sX(z)=AX(s)+BX(s)$$
-$$zX(z)=A_dX(z)+B_dX(z)$$
+$$sX(s)=AX(s)+BU(s)$$
+$$zX(z)=A_dX(z)+B_dU(z)$$
 带入可得
-$$\frac{z-1}{T}X(z)=AX(z)+BX(z)$$
-$$zX(z)=A(T+1)X(z)+BTX(z)$$
+$$\frac{z-1}{T}X(z)=AX(z)+BU(z)$$
+$$zX(z)=A(T+1)X(z)+BTU(z)$$
 - [后向欧拉, 双线性变换同理](https://blog.csdn.net/weixin_44041199/article/details/119538048?utm_medium=distribute.pc_aggpage_search_result.none-task-blog-2~aggregatepage~first_rank_ecpm_v1~rank_v31_ecpm-6-119538048-null-null.pc_agg_new_rank&utm_term=%E7%8A%B6%E6%80%81%E6%96%B9%E7%A8%8B%E7%A6%BB%E6%95%A3%E5%8C%96%E5%A4%84%E7%90%86&spm=1000.2123.3001.4430)
 
 双线性变换本质上是分子分母分别作泰勒展开，去掉高阶项．双变换即两个线性变换．双线性变换是自然对数函数的一阶估算方法，也就是将s平面映射到z平面上
@@ -70,7 +70,12 @@ $$zX(z)=A(T+1)X(z)+BTX(z)$$
  可以得到：
  $$s=\frac{2}{T}\frac{z-1}{z+1}$$
  带入到 
- $$sX(z)=AX(s)+BX(s)$$
+ $$sX(s)=AX(s)+BU(s)$$
+ 有
+ $$\frac{2}{T}\frac{z-1}{z+1}X(z)=AX(z)+BU(z)$$
+ $$(z-1)X(z)=A\frac{T}{2}(z+1)X(z)+B\frac{T}{2}(z+1)U(z)$$
+ 最后推导出形如
+ $$zX(z)=A_dX(z)+B_dX(z)$$
 对于状态方程：
 $$\dot{x} = Ax + Bu + c$$
 进行双线性变换:
