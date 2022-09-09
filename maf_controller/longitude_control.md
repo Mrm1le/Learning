@@ -43,15 +43,44 @@
 ## - Vel control
 
 - 低通滤波器处理目标速度序列
+```
+  lon_vel_ctrl_.cmd_lowpass_filter_.Update(lon_vel_state.raw_cmd_);
+  lon_vel_state.cmd_ = lon_vel_ctrl_.cmd_lowpass_filter_.GetOutput();
+```
 - 扰动观测器？？？
 - 计算速度误差
+```
+lon_vel_state.raw_err = lon_vel_state.cmd_ - lon_vel_state.state_;
+```
 - 低通滤波器处理速度误差
-- 根据坡度对Kp和Ki进行插值计算（动态调整Kp， Ki)
-- 前馈+反馈控制 获得目标加速度
+```
+lon_vel_ctrl_.loop_lowpass_filter_.Update(lon_vel_state.raw_err);
+lon_vel_state.err_ = lon_vel_ctrl_.loop_lowpass_filter_.GetOutput();
+```
+- 根据速度、坡度等对Kp和Ki进行插值计算（**动态调整Kp， Ki**)
+- **前馈**+反馈控制 获得目标加速度
+```
+  lon_vel_state.fdbk_out_ = lon_vel_ctrl_.loop_compensator_.GetOutput() *
+                            lon_vel_ctrl_.vel_loop_dynamic_gain_;
+
+  // feedforward control should be limited with 85% vel_out_acc_limit
+  lon_vel_state.raw_ffwd_out_ =
+      mathlib::Clamp(ref_ptr_->acc_ref_, param_ptr_->vel_out_acc_min_,
+                     param_ptr_->vel_out_acc_max_);
+
+  lon_vel_ctrl_.ffwd_compensator_.Update(lon_vel_state.raw_ffwd_out_);
+  lon_vel_state.ffwd_out_ = lon_vel_ctrl_.ffwd_compensator_.GetOutput();
+```
 - 坡度补偿已经嵌入到扰动观测器中？？
 - 根据扰动观测器的输出计算目标加速度
+```
+lon_vel_state.raw_out_ -= lon_vel_state.dist_;
+```
 - 斜坡滤波器 更新得到最终的目标加速度
-  
+```
+  lon_vel_ctrl_.out_slope_filter_.Update(lon_vel_state.raw_out_);
+  lon_vel_state.out_ = lon_vel_ctrl_.out_slope_filter_.GetOutput();
+```
 ## actuator control
 ```
   Actuator update(const double &steer_angle_deg, const double &acceleration,
