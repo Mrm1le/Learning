@@ -2,16 +2,16 @@
 横向控制采用osqp求解器，参考量为 $dx, dy, d\phi$
 
 - 通过调用osqp库函数，求解mpc方程
-```
-  lateral_ctrl_.solver_flag_ =
-      lateral_ctrl_.lateral_mpc_solver_.UpdateBySerialRef(lateral_ctrl_.x0_,
-                                                          XRef);
-```
+  ```
+    lateral_ctrl_.solver_flag_ =
+        lateral_ctrl_.lateral_mpc_solver_.UpdateBySerialRef(lateral_ctrl_.x0_,
+                                                            XRef);
+  ```
   - 该调用主要包了两步，分别为
     - 更新梯度，即计算 $Q_{ref}$
-    ```
-    CastMPCToQPGradientBySerialRef
-    ```
+      ```
+      CastMPCToQPGradientBySerialRef
+      ```
     - 迭代求解
       - 更新边界值
       - 更新梯度序列
