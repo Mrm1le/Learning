@@ -1,5 +1,5 @@
 # parking
-横向控制采用osqp求解器，参考量为$dx, dy, d\phi$
+横向控制采用osqp求解器，参考量为 $dx, dy, d\phi$
 
 - 通过调用osqp库函数，求解mpc方程
 ```
