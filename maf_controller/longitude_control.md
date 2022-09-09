@@ -1,3 +1,4 @@
+# pilot
 ## - Pos control
 ```
   auto &lon_pos_state = lon_pos_ctrl_.loop_state_;
@@ -113,3 +114,88 @@ convert函数的核心是减速则输出减速度，加速则做加速度与扭�
     return m4;
 ```
 
+# parking
+## pos control
+```
+bool ControlLoop::LongitudePosControlApa() {
+  // pos ctrl
+  auto &lon_pos_state = lon_pos_ctrl_.loop_state_;
+
+  // error filter
+  lon_pos_state.raw_err = ref_ptr_->remain_s_;
+
+  lon_pos_ctrl_.loop_lowpass_filter_.Update(lon_pos_state.raw_err);
+
+  lon_pos_state.err_ = lon_pos_ctrl_.loop_lowpass_filter_.GetOutput();
+
+  // feedback control
+  lon_pos_ctrl_.loop_compensator_.Update(lon_pos_state.err_);
+
+  lon_pos_state.fdbk_out_ = lon_pos_ctrl_.loop_compensator_.GetOutput();
+
+  lon_pos_state.raw_ffwd_out_ = 0.0;
+  lon_pos_state.ffwd_out_ = lon_pos_state.raw_ffwd_out_;
+
+  lon_pos_state.raw_out_ = lon_pos_state.fdbk_out_ + lon_pos_state.ffwd_out_;
+
+  // slope filter
+  lon_pos_ctrl_.out_slope_filter_.Update(lon_pos_state.raw_out_);
+  lon_pos_state.out_ = lon_pos_ctrl_.out_slope_filter_.GetOutput();
+
+  return true;
+}
+```
+- 纵向误差初值为remain_s_
+- 低通滤波器处理纵向误差
+- 前馈+反馈获取目标加速度
+- 斜坡滤波器处理目标加速度
+## vel control
+- 低通滤波器处理目标速度序列
+``` 
+  lon_vel_ctrl_.cmd_lowpass_filter_.Update(lon_vel_state.raw_cmd_);
+  lon_vel_state.cmd_ = lon_vel_ctrl_.cmd_lowpass_filter_.GetOutput();
+```
+- 计算安全停车状态和对应的安全停车加速度
+```  
+  double safe_stop_acc =
+      (std::pow(lon_vel_state.cmd_, 2) - std::pow(measures_ptr_->vel_, 2)) /
+      ref_ptr_->remain_s_;
+  safe_stop_acc = std::min(-0.2, safe_stop_acc);
+```
+- 前馈和反馈计算目标加速度
+  前馈分两项，分别是速度项前馈和转向导致的前馈
+- 速度项前馈：
+```
+  lon_vel_ctrl_.ffwd_differentiator_.Update(lon_vel_state.cmd_);
+
+  lon_vel_state.ffwd_out_ = lon_vel_ctrl_.ffwd_differentiator_.GetOutput() *
+                            param_ptr_->vel_ffwd_gain_;
+```
+  专项导致的前馈
+```
+  lon_vel_state.steer_ffwd_out_ =
+      std::tan(
+          (std::abs(pnc::mathlib::Rad2Deg(measures_ptr_->steering_angle_)) /
+           vehicle_model_ptr_->get_max_steer_degree()) *
+          (3.1415926 / 4.0)) *
+      param_ptr_->steer_ffwd_gain_;
+```
+- 反馈项：
+  安全停车的反馈项为安全停车减速度
+```
+    safe_stop_acc =
+        std::max(safe_stop_acc,
+                 lon_vel_state.fdbk_out_ +
+                     param_ptr_->lon_stopping_acc_rate_min_ / param_ptr_->fs_);
+    lon_vel_state.fdbk_out_ = safe_stop_acc;
+```
+  其他时候的反馈项由pid算法得到
+```
+    lon_vel_state.fdbk_out_ = lon_vel_ctrl_.loop_compensator_.GetOutput();
+```
+- 斜坡滤波器处理目标加速度
+```
+  lon_vel_ctrl_.out_slope_filter_.Update(lon_vel_state.raw_out_);
+  lon_vel_state.out_ = lon_vel_ctrl_.out_slope_filter_.GetOutput();
+```
+- 
