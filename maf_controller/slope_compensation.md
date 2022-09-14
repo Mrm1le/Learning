@@ -35,6 +35,19 @@
 
   lon_vel_state.raw_out_ -= lon_vel_state.dist_;
   ```
+  - [扰动观测器](https://zhuanlan.zhihu.com/p/504256899)
+    ```
+    double dist_prior = std::min(param_ptr_->slope_compensate_ratio_ * measures_ptr_->slope_acc_, param_ptr_->slope_up_compensate_max_);
+    ```
+    - 扰动观测器更新的输入是 **车速, 速度环输出的目标加速度值，坡度对应的加速度值**
+    ```
+    lon_vel_ctrl_.disturbance_observer_.Update(measures_ptr_->vel_,lon_vel_state.out_, dist_prior);
+    ```
+    - 获取扰动观测值，作为最终的坡度acc值。 观测值为 **名义模型的输出/模型增益**
+    ```
+    double GetDisturbanceInput() { return dist_hat_ / model_gain_; }
+    ```
+
 
 - 坡度对斜坡滤波器的影响，根据坡度形成的acc对斜坡滤波器设置初值。 即斜坡产生的加速度为目标加速度的一个固定值。当上acc为1的坡时，给定的目标加速度不能与1差距太大
   ```
