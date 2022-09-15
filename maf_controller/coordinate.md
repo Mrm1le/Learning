@@ -38,7 +38,7 @@ controller中主要用到了两种坐标系，惯性坐标系和车体坐标系�
   jerk_ego_dif_.Update(measures_ptr_->acc_ego_);
   measures_ptr_->jerk_ego_ = jerk_ego_dif_.GetOutput();
   ```
-- 侧偏角（beta），这里的转换关系有点迷惑，不过不影响整体思路。是以速度、角速度和旋转矩阵（车辆位姿）求取的侧偏角。*点乘和叉乘分别可以求解$cos\beta$ 和$sin\beta$*
+- 侧偏角（$\beta$），这里的转换关系有点迷惑，不过不影响整体思路。是以速度、角速度和旋转矩阵（车辆位姿）求取的侧偏角。*点乘和叉乘分别可以求解$cos\beta$ 和$sin\beta$*
   ```
   measures_ptr_->vel_cent_i_ =  measures_ptr_->vel_i_ + measures_ptr_->ang_vel_b_.cross(d_rear2center_i);
   measures_ptr_->vel_cent_b_ = measures_ptr_->rotm_.transpose() * measures_ptr_->vel_cent_i_;
@@ -49,9 +49,9 @@ controller中主要用到了两种坐标系，惯性坐标系和车体坐标系�
     Eigen::Vector3d cross_XV = Xbody_i.cross(measures_ptr_->vel_cent_i_);
     double sin_theta = cross_XV.norm() / measures_ptr_->vel_cent_i_.norm();
   ```
+## appendix
 - 坡度值获取（见slope_compensation）
 
-## appendix
 - 曲率因数获取，根据速度和转向传动比、轮距等计算曲率因子.猜测曲率因子可能会影响到横向控制的阈值
   ```
   measures_ptr_->curv_factor_ = vehicle_model_ptr_->curvature_factor(measures_ptr_->vel_) * param_ptr_->curv_factor_gain_;
