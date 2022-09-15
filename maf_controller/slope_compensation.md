@@ -8,7 +8,7 @@
                            ego_pose.orientation.quaternion_local.z);
   ```                         
   - 转化为旋转矩阵
-  - 四元数与[旋转矩阵](https://blog.csdn.net/weixin_45632220/article/details/117735223?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522166313461416800180613261%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=166313461416800180613261&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-117735223-null-null.142^v47^body_digest,201^v3^control_1&utm_term=%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5&spm=1018.2226.3001.4187)的转化
+  - 四元数与[旋转矩阵](https://blog.csdn.net/weixin_45632220/article/details/117735223?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522166313461416800180613261%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=166313461416800180613261&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-117735223-null-null.142^v47^body_digest,201^v3^control_1&utm_term=%E6%97%8B%E8%BD%AC%E7%9F%A9%E9%98%B5&spm=1018.2226.3001.4187)的转化,**旋转矩阵是车体坐标系与惯性坐标系之间的转换矩阵**
   ```
    measures_ptr_->rotm_ = transform::Quat2Rotm(measures_ptr_->q_);
   ```
